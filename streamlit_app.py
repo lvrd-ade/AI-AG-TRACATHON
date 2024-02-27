@@ -5,7 +5,7 @@ import numpy as np
 
 #------------------------------------------ Cohort Stuff
 import cohere
-co = cohere.Client('<<i8LhL790rANZGVLff63yPnvuykoeu1SnkRdi9QKz>>')
+co = cohere.Client('i8LhL790rANZGVLff63yPnvuykoeu1SnkRdi9QKz')
 
 from cohere.responses.classify import Example
 
@@ -35,9 +35,9 @@ examples=[
 ]
 
 
-inputs=[" I want to change my password”,
-        "Does my policy cover prescription medication?"
-        ]
+inputs = ["I want to change my password", 
+          "Does my policy cover prescription medication?" 
+         ]
 
 response = co.classify(  
     model='large',  
