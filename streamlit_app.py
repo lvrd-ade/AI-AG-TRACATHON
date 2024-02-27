@@ -138,6 +138,24 @@ st.write("Hello, world!")
 if st.button('Click me'):
     st.write("You clicked the button!")
 
+# User input area
+user_input = st.text_input("Enter your query:", "")
+# Button to trigger classification
+if st.button('Submit'):
+    if user_input:  # Check if there's input
+        response = co.classify(
+            model='large',  
+            inputs=[user_input],  
+            examples=examples
+        )
+        classification = response.classifications[0]
+
+        # Display the AI's response
+        st.write("Predicted Category: ", classification.prediction)
+        st.write("Confidence:", classification.confidence)
+    else:
+        st.write("Please enter some text.")
+
 # Placeholder data
 x = np.arange(10)
 y = np.random.randn(10)
