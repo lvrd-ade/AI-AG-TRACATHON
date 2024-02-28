@@ -1,3 +1,4 @@
+import datetime
 import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
@@ -180,3 +181,11 @@ with col3:
     fig, ax = plt.subplots()
     ax.plot(x, y) 
     st.pyplot(fig)
+
+
+    
+# User date input
+user_date = st.date_input("Select a date:", datetime.date.today())
+
+# are we doing the computation for this prediction in-app, or sending this date to a backend?
+st.write("You selected:", user_date) 
