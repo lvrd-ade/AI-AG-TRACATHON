@@ -2,10 +2,27 @@ import datetime
 import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
+import cohere # cohere AI import
 
+
+
+#------------------------------------------ CSS Stuff
+def add_bg_from_url():
+    st.markdown(
+        f"""
+        <style>
+        body {{
+            background-image: url("path/to/your/image.jpg");
+            background-size: cover;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+add_bg_from_url()  # Call the function
 
 #------------------------------------------ Cohort Stuff
-import cohere
 co = cohere.Client('i8LhL790rANZGVLff63yPnvuykoeu1SnkRdi9QKz')
 
 from cohere.responses.classify import Example
