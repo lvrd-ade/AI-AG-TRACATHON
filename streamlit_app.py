@@ -3,6 +3,11 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
 import cohere # cohere AI import
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+COHERE_API_KEY = os.getenv("COHERE_API_KEY")
 
 
 
@@ -23,7 +28,7 @@ def add_bg_from_url():
 add_bg_from_url()  # Call the function
 
 #------------------------------------------ Cohort Stuff
-co = cohere.Client('i8LhL790rANZGVLff63yPnvuykoeu1SnkRdi9QKz')
+co = cohere.Client(COHERE_API_KEY)
 
 from cohere.responses.classify import Example
 
