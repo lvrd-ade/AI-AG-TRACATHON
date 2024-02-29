@@ -24,7 +24,7 @@ def main():
 
     # Extreme rainfall
     threshold = df['Precipitation'].quantile(0.95)  # extreme rainfall should be in the 95th percentile of rainfall
-    df['ExtremeRainfall'] = df['Precipitation'] > threshold
+    df['ExtremeRainfall'] = df['Precipitation'] > threshold 
 
     # Target variable indicating rainfall based on both precipitation and humidity
     df['Rainfall'] = ((df['Precipitation'] > precipitation_threshold) | (df['Humidity'] > humidity_threshold)).astype(int)
@@ -35,7 +35,10 @@ def main():
     # Save cleaned dataframe to csv
     df.to_csv(FILE_ROOT + "cleaned_data.csv")
     print(df.info())
-    print(df)
+
+    # checking for days there are extreme rainfall
+    print(df[df['ExtremeRainfall'] == True])
+    df[df['ExtremeRainfall'] == True].to_csv(FILE_ROOT + "extreme_days.csv")
 
 
 main()
