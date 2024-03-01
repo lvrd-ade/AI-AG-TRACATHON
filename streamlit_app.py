@@ -5,9 +5,10 @@ import numpy as np
 import cohere # cohere AI import
 from dotenv import load_dotenv
 import os
+import pandas as pd 
 
 load_dotenv()
-COHERE_API_KEY = os.getenv("COHERE_API_KEY")
+COHERE_API_KEY = os.getenv("API_KEY")
 
 
 
@@ -155,6 +156,19 @@ print(response.classifications)
 
 
 #------------------------------------ streamlit stuff
+
+#pandas dataframe to hold display
+data = {
+    "humidity": [75, 68, 80, 72, 60, 78, 65],
+    "max_temperature": [82, 78, 85, 80, 72, 83, 79],
+    "min_temperature": [65, 61, 68, 63, 58, 66, 62],
+    "avg_wind_speed": [12, 8, 15, 10, 9, 11, 7],
+    "month": [8, 8, 8, 8, 8, 8, 8],  
+    "day": [15, 16, 17, 18, 19, 20, 21],  
+    "year": [2023, 2023, 2023, 2023, 2023, 2023, 2023], 
+    "avg_temperature": [73, 70, 77, 72, 65, 75, 70], 
+}
+
 st.title('My First Streamlit App')
 st.write("Hello, world!")
 
@@ -204,8 +218,6 @@ with col3:
     ax.plot(x, y) 
     st.pyplot(fig)
 
-
-    
 # User date input
 user_date = st.date_input("Select a date:", datetime.date.today())
 
