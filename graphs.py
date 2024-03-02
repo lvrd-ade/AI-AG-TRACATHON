@@ -28,6 +28,7 @@ def main():
     heat_map(df)
 
 
+
 def bar_graph(x, y):
     plt.figure(figsize=(10, 6))
     plt.scatter(df[x], df[y], color='blue', alpha=0.5)
@@ -68,7 +69,7 @@ def heat_map(df):
     ax.set_yticklabels(ax.get_yticklabels(), rotation = 0, fontsize = 14)
     ax.set_xticklabels(ax.get_xticklabels(), rotation = 0, fontsize = 14)
     ax.tick_params(rotation = 0)
-    _ = plt.title('Average Daily Precipitation (mm) 2005-2021', fontdict={'fontsize':18}, pad=14)
+    _ = plt.title('Average Daily Precipitation (mm) 2006-2022', fontdict={'fontsize':18}, pad=14)
     plt.show()
 
 main()
