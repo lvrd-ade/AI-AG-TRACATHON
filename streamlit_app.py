@@ -1,6 +1,7 @@
 import datetime
 import streamlit as st
 import matplotlib.pyplot as plt
+import base64
 import numpy as np
 import cohere # cohere AI import
 from dotenv import load_dotenv
@@ -11,30 +12,43 @@ import pickle
 load_dotenv()
 COHERE_API_KEY = os.getenv("API_KEY")
 
+
 #loading our rain prediction model
 model = pickle.load(open('rainfall_prediction_model.pkl', 'rb')) 
 
-#------------------------------------------ CSS Stuff
-def add_bg_from_url():
-    st.markdown(
-        f"""
-        <style>
-        body {{
-            background-image: url("path/to/your/image.jpg");
-            background-size: cover;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
 
-add_bg_from_url()  # Call the function
+
+#------------------------------------------ CSS Stuff
+@st.cache_data
+def get_img_as_base64(file):
+    with open(file, "rb") as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+img = get_img_as_base64("img.jpg")
+page_bg_image = f"""
+  <style>
+    [data-testid="stAppViewContainer"] > .main {{
+    background-image: url("data:image/png;base64,{img}");
+    background-size: 100%;
+    background-position: top left;
+    background-repeat: no-repeat;
+    }}
+
+    [data-testid="stHeader"] {{
+    background: rgba(0,0,0,0);
+    }}
+
+    [data-testid="stToolbar"] {{
+    right: 2rem;
+    }}
+  </style>
+"""
+st.markdown(page_bg_image, unsafe_allow_html=True)
 
 #------------------------------------------ Cohort Stuff
 co = cohere.Client(COHERE_API_KEY)
 
 from cohere.responses.classify import Example
-
 
 examples=[
   Example("How do I find my insurance policy?", "Finding policy details"),
@@ -60,7 +74,6 @@ examples=[
   Example("How do I delete my account?", "Cancelling coverage")
 ]
 
-
 inputs = ["I want to change my password", 
           "Does my policy cover prescription medication?" 
          ]
@@ -71,7 +84,6 @@ response = co.classify(
     examples=examples)
 
 print(response.classifications)
-
 
 {
   "results": [
@@ -159,8 +171,19 @@ print(response.classifications)
 
 #------------------------------------ streamlit stuff
 
+#pandas dataframe to hold display
+data = {
+    "humidity": [75, 68, 80, 72, 60, 78, 65],
+    "max_temperature": [82, 78, 85, 80, 72, 83, 79],
+    "min_temperature": [65, 61, 68, 63, 58, 66, 62],
+    "avg_wind_speed": [12, 8, 15, 10, 9, 11, 7],
+    "month": [8, 8, 8, 8, 8, 8, 8],  
+    "day": [15, 16, 17, 18, 19, 20, 21],  
+    "year": [2023, 2023, 2023, 2023, 2023, 2023, 2023], 
+    "avg_temperature": [73, 70, 77, 72, 65, 75, 70], 
+}
 
-st.title('My First Streamlit App')
+st.title('Extreme Rainfall Alert !!')
 st.write("Hello, world!")
 
 if st.button('Click me'):
@@ -213,7 +236,9 @@ with col3:
 user_date = st.date_input("Select a date:", datetime.date.today())
 
 # are we doing the computation for this prediction in-app, or sending this date to a backend?
-st.write("You selected:", user_date) 
+st.write("You selected:", user_date)
+
+
 
 
 #pandas dataframe to hold display
