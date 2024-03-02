@@ -62,7 +62,7 @@ def heat_map(df):
 
 
     plt.figure(figsize = (40, 14))
-    ax = sns.heatmap(all_days_avg_df, cmap = gyr, annot=True, fmt='.2f',
+    ax = sns.heatmap(all_days_avg_df, cmap = gyr, annot=True, fmt='.0f',
                 vmin=0, linewidths=.1,
                 annot_kws={"size": 12}, square=True,  # <-- square cell
                 cbar_kws={"shrink": .9, 'label': 'Rain (mm)'})
