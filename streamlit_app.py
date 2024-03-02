@@ -1,6 +1,7 @@
 import datetime
 import streamlit as st
 import matplotlib.pyplot as plt
+import base64
 import numpy as np
 import cohere # cohere AI import
 from dotenv import load_dotenv
@@ -12,26 +13,36 @@ COHERE_API_KEY = os.getenv("COHERE_API_KEY")
 
 
 #------------------------------------------ CSS Stuff
-def add_bg_from_url():
-    st.markdown(
-        f"""
-        <style>
-        body {{
-            background-image: url("path/to/your/image.jpg");
-            background-size: cover;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+@st.cache_data
+def get_img_as_base64(file):
+    with open(file, "rb") as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+img = get_img_as_base64("img.jpg")
+page_bg_image = f"""
+  <style>
+    [data-testid="stAppViewContainer"] > .main {{
+    background-image: url("data:image/png;base64,{img}");
+    background-size: 100%;
+    background-position: top left;
+    background-repeat: no-repeat;
+    }}
 
-add_bg_from_url()  # Call the function
+    [data-testid="stHeader"] {{
+    background: rgba(0,0,0,0);
+    }}
+
+    [data-testid="stToolbar"] {{
+    right: 2rem;
+    }}
+  </style>
+"""
+st.markdown(page_bg_image, unsafe_allow_html=True)
 
 #------------------------------------------ Cohort Stuff
 co = cohere.Client(COHERE_API_KEY)
 
 from cohere.responses.classify import Example
-
 
 examples=[
   Example("How do I find my insurance policy?", "Finding policy details"),
@@ -57,7 +68,6 @@ examples=[
   Example("How do I delete my account?", "Cancelling coverage")
 ]
 
-
 inputs = ["I want to change my password", 
           "Does my policy cover prescription medication?" 
          ]
@@ -68,7 +78,6 @@ response = co.classify(
     examples=examples)
 
 print(response.classifications)
-
 
 {
   "results": [
@@ -155,7 +164,7 @@ print(response.classifications)
 
 
 #------------------------------------ streamlit stuff
-st.title('My First Streamlit App')
+st.title('Extreme Rainfalal Alert  !!')
 st.write("Hello, world!")
 
 if st.button('Click me'):
