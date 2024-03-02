@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import seaborn as sns
+from matplotlib.colors import LinearSegmentedColormap
+import calendar
 
 from globals import *
 
@@ -23,13 +25,7 @@ def main():
 
     #bar_graph(chosen_x, chosen_y)
     #bar_graph(y4, x2)
-    pivot_df = df.pivot_table(index='Month', columns=['Day'], values='Precipitation', aggfunc='mean')
-    plt.figure(figsize=(12, 8))
-    sns.heatmap(pivot_df, cmap='YlGnBu', cbar_kws={'label': 'Average Precipitation (mm)'})
-    plt.title('Average Precipitation by Day and Month (2006-2023)')
-    plt.xlabel('Month - Day')
-    plt.ylabel('Year')
-    plt.show()
+    heat_map(df)
 
 
 def bar_graph(x, y):
@@ -41,14 +37,28 @@ def bar_graph(x, y):
     plt.grid(True)
     plt.show()
 
-def heat_map(x, y):
-    pivot_df = df.pivot_table(index='Year', columns=['Month', 'Day'], values='Precipitation', aggfunc='mean')
-    plt.figure(figsize=(12, 8))
-    sns.heatmap(pivot_df, cmap='YlGnBu', cbar_kws={'label': 'Average Precipitation (mm)'})
-    plt.title('Average Precipitation by Day and Month (2006-2023)')
-    plt.xlabel('Month - Day')
-    plt.ylabel('Year')
-    plt.show()
+def heat_map(df):
+    # Daily Average Data
+    all_days_avg_df = df.groupby([df.Date.dt.month, df.Date.dt.day])['Precipitation'].mean()
+    all_days_avg_df = all_days_avg_df.unstack()
+    all_days_avg_df = all_days_avg_df.set_index([[calendar.month_abbr[i] for i in list(all_days_avg_df.index)]])
 
+    gyr = LinearSegmentedColormap.from_list(
+    name='Divergent', 
+    colors=['moccasin','papayawhip','khaki','yellow','greenyellow','lawngreen','mediumseagreen','forestgreen',\
+            'darkgreen', 'salmon', 'orangered','firebrick','crimson']
+    )
+
+
+    plt.figure(figsize = (40, 14))
+    ax = sns.heatmap(all_days_avg_df, cmap = gyr, annot=True, fmt='.2f',
+                vmin=0, linewidths=.1,
+                annot_kws={"size": 12}, square=True,  # <-- square cell
+                cbar_kws={"shrink": .9, 'label': 'Rain (mm)'})
+    ax.set_yticklabels(ax.get_yticklabels(), rotation = 0, fontsize = 14)
+    ax.set_xticklabels(ax.get_xticklabels(), rotation = 0, fontsize = 14)
+    ax.tick_params(rotation = 0)
+    _ = plt.title('Average Daily Precipitation (mm) 2005-2021', fontdict={'fontsize':18}, pad=14)
+    plt.show()
 
 main()

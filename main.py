@@ -32,8 +32,8 @@ def main():
     # Specify order
     df = df[['Year', 'Month', 'Day', 'MaxT', 'MinT', 'AvgT', 'WindSpeed', 'Humidity', 'Precipitation', 'Rainfall', 'ExtremeRainfall']]
 
-    # clean data to be from 2010 to 2022
-    df = df[(df['Year'] >= 2010) & (df['Year'] <= 2022)]
+    # clean data to be from 2006 to 2022
+    df = df[(df['Year'] >= 2006) & (df['Year'] <= 2022)]
     
     # Save cleaned dataframe to csv
     df.to_csv(FILE_ROOT + "cleaned_data.csv")
