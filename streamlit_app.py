@@ -235,22 +235,10 @@ user_input = st.text_input("Enter your query:", "")
 # st.write("You selected:", user_date)
 #-----------------------------------
 
-# Button to make prediction
-if st.button('Predict Rainfall'):
-  # Creating a numpy array from the input data
-  input_data = np.array([[year, month, day, max_temp, min_temp, wind_speed, humidity]])
 
-  # Making prediction
-  prediction = predict_rainfall(input_data)
-  
-  print(prediction)  # Add this to debug
 
-  # Mapping prediction to label
-  prediction_label = ['No Rain', 'Light Rain', 'Moderate Rain', 'Heavy Rain', 'Extreme Rain'][prediction[0][0]]
-  
-  st.success(f'The predicted rainfall category is: {prediction_label}')
+#Rain Prediction stuff------------------
 
-#pandas dataframe to hold display
 data = {
     "humidity": [75, 68, 80, 72, 60, 78, 65],
     "max_temperature": [82, 78, 85, 80, 72, 83, 79],
@@ -261,18 +249,58 @@ data = {
     "year": [2023, 2023, 2023, 2023, 2023, 2023, 2023], 
     "avg_temperature": [73, 70, 77, 72, 65, 75, 70], 
 }
-
 dfDisplayData = pd.DataFrame(data)
 
-# Prediction
-if st.button("Predict"):
-    
-  for i in range(7):
-    
-    input_data = [dfDisplayData["humidity"][i], dfDisplayData["max_temperature"][i], dfDisplayData["min_temperature"][i], dfDisplayData["avg_wind_speed"][i],dfDisplayData["month"][i],dfDisplayData["day"][i],dfDisplayData["year"][i],dfDisplayData["avg_temperature"][i]] # Construct from user input
-    prediction = model.predict(input_data)
+# Load your trained CatBoost model
+model = load('catboost_rainfall_model.joblib')
 
-    if prediction == 1:
-        st.write("Prediction: It's likely to rain.")
-    else:
-        st.write("Prediction: It's unlikely to rain.")
+# Function to make predictions
+def predict_rainfall(input_data):
+    prediction = model.predict(input_data)
+    return prediction
+
+# Button to make prediction
+if st.button('Predict Rainfall'):
+
+  for i in range(7):
+    # Creating a numpy array from the input data
+    # input_data = [dfDisplayData["humidity"][i], dfDisplayData["max_temperature"][i], dfDisplayData["min_temperature"][i], dfDisplayData["avg_wind_speed"][i],dfDisplayData["month"][i],dfDisplayData["day"][i],dfDisplayData["year"][i],dfDisplayData["avg_temperature"][i]] # Construct from user input
+    input_data = np.array([[dfDisplayData["year"][i], dfDisplayData["month"][i], dfDisplayData["day"][i], dfDisplayData["max_temperature"][i], dfDisplayData["min_temperature"][i], dfDisplayData["avg_wind_speed"][i], dfDisplayData["humidity"][i]]])
+    # Making prediction
+    prediction = predict_rainfall(input_data)
+    
+    print(prediction)  # Add this to debug
+
+    # Mapping prediction to label
+    prediction_label = ['No Rain', 'Light Rain', 'Moderate Rain', 'Heavy Rain', 'Extreme Rain'][prediction[0][0]]
+    # print(prediction_label)
+    if prediction_label == 'No Rain':
+      st.success(f'The predicted rainfall category is: {prediction_label}', icon="🌵")
+    elif prediction_label == 'Light Rain':
+      st.success(f'The predicted rainfall category is: {prediction_label}', icon="💧")
+    elif prediction_label == 'Moderate Rain':
+      st.success(f'The predicted rainfall category is: {prediction_label}', icon="💦")
+    elif prediction_label == 'Heavy Rain':
+      st.success(f'The predicted rainfall category is: {prediction_label}', icon="🌧️")
+    elif prediction_label == 'Extreme Rain':
+      st.success(f'The predicted rainfall category is: {prediction_label}', icon="⚠️⛈️")
+    
+
+    
+
+#pandas dataframe to hold display
+
+
+
+# Prediction
+# if st.button("Predict"):
+    
+  
+    
+#     input_data = [dfDisplayData["humidity"][i], dfDisplayData["max_temperature"][i], dfDisplayData["min_temperature"][i], dfDisplayData["avg_wind_speed"][i],dfDisplayData["month"][i],dfDisplayData["day"][i],dfDisplayData["year"][i],dfDisplayData["avg_temperature"][i]] # Construct from user input
+#     prediction = model.predict(input_data)
+
+#     if prediction == 1:
+#         st.write("Prediction: It's likely to rain.")
+#     else:
+#         st.write("Prediction: It's unlikely to rain.")
