@@ -262,17 +262,37 @@ def predict_rainfall(input_data):
 # Button to make prediction
 if st.button('Predict Rainfall'):
 
-  for i in range(7):
-    # Creating a numpy array from the input data
-    # input_data = [dfDisplayData["humidity"][i], dfDisplayData["max_temperature"][i], dfDisplayData["min_temperature"][i], dfDisplayData["avg_wind_speed"][i],dfDisplayData["month"][i],dfDisplayData["day"][i],dfDisplayData["year"][i],dfDisplayData["avg_temperature"][i]] # Construct from user input
-    input_data = np.array([[dfDisplayData["year"][i], dfDisplayData["month"][i], dfDisplayData["day"][i], dfDisplayData["max_temperature"][i], dfDisplayData["min_temperature"][i], dfDisplayData["avg_wind_speed"][i], dfDisplayData["humidity"][i]]])
-    # Making prediction
-    prediction = predict_rainfall(input_data)
+  # for i in range(7):
+  #   # Creating a numpy array from the input data
+  #   # input_data = [dfDisplayData["humidity"][i], dfDisplayData["max_temperature"][i], dfDisplayData["min_temperature"][i], dfDisplayData["avg_wind_speed"][i],dfDisplayData["month"][i],dfDisplayData["day"][i],dfDisplayData["year"][i],dfDisplayData["avg_temperature"][i]] # Construct from user input
+  #   input_data = np.array([[dfDisplayData["year"][i], dfDisplayData["month"][i], dfDisplayData["day"][i], dfDisplayData["max_temperature"][i], dfDisplayData["min_temperature"][i], dfDisplayData["avg_wind_speed"][i], dfDisplayData["humidity"][i]]])
+  #   # Making prediction
+  #   prediction = predict_rainfall(input_data)
     
-    print(prediction)  # Add this to debug
+  #   print(prediction)  # Add this to debug
 
-    # Mapping prediction to label
-    prediction_label = ['No Rain', 'Light Rain', 'Moderate Rain', 'Heavy Rain', 'Extreme Rain'][prediction[0][0]]
+  #   # Mapping prediction to label
+  #   prediction_label = ['No Rain', 'Light Rain', 'Moderate Rain', 'Heavy Rain', 'Extreme Rain'][prediction[0][0]]
+
+
+    for i in range(7):
+        # Input data (get this from user input later)
+        input_data = np.array([[dfDisplayData["year"][i], dfDisplayData["month"][i], dfDisplayData["day"][i], dfDisplayData["max_temperature"][i], dfDisplayData["min_temperature"][i], dfDisplayData["avg_wind_speed"][i], dfDisplayData["humidity"][i]]])
+
+        # Prediction
+        prediction = predict_rainfall(input_data)
+        prediction_label = ['No Rain', 'Light Rain', 'Moderate Rain', 'Heavy Rain', 'Extreme Rain'][prediction[0][0]]
+
+        # Display weather data
+        st.write("**Day:**", i + 1)  # Adjust if you need zero-based indexing
+        st.write("**Year:**", dfDisplayData["year"][i])
+        st.write("**Month:**", dfDisplayData["month"][i])
+        st.write("**Day:**", dfDisplayData["day"][i])
+        st.write("**Max Temperature:**", dfDisplayData["max_temperature"][i])
+        st.write("**Min Temperature:**", dfDisplayData["min_temperature"][i])
+        st.write("**Avg. Wind Speed:**", dfDisplayData["avg_wind_speed"][i])
+        st.write("**Humidity:**", dfDisplayData["humidity"][i]) 
+
     # print(prediction_label)
     if prediction_label == 'No Rain':
       st.success(f'The predicted rainfall category is: {prediction_label}', icon="🌵")
