@@ -308,7 +308,7 @@ def predict_rainfall(input_data):
 #     elif prediction_label == 'Extreme Rain':
 #       st.success(f'The predicted rainfall category is: {prediction_label}', icon="⚠️⛈️")
     
-#css for making the horizontal line custom
+#css stuff
 st.markdown("""
   <style>
       .day-divider {
@@ -328,9 +328,6 @@ st.markdown("""
 #third iteration
 if st.button('Predict Rainfall'):
     
-  
-  
-
   for i in range(7):
       
       st.markdown('<div class="day-divider"></div>', unsafe_allow_html=True)
