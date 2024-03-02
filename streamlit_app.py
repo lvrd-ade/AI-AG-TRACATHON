@@ -315,6 +315,12 @@ st.markdown("""
           border-bottom: 10px solid black; /* Changed color to black and made thicker*/
           margin-bottom: 10px; 
       }
+      .prediction-label {  /* Style for the prediction label */
+            font-size: 40px;
+            color: white;  /* White text on black background */
+            background-color: black;
+            padding: 5px;  /* Add some padding for visual comfort */
+      }
   </style>
   """, unsafe_allow_html=True)
     
@@ -354,16 +360,17 @@ if st.button('Predict Rainfall'):
 
       # Display prediction in the second column
       with col2:
-          if prediction_label == 'No Rain':
-              st.write('**Predicted Rainfall:**', prediction_label, icon="🌵")
-          elif prediction_label == 'Light Rain':
-              st.write('**Predicted Rainfall:**', prediction_label, icon="💧")
-          elif prediction_label == 'Light Rain':
-              st.write('**Predicted Rainfall:**', prediction_label, icon="💦")
-          elif prediction_label == 'Light Rain':
-              st.write('**Predicted Rainfall:**', prediction_label, icon="🌧️")
-          elif prediction_label == 'Light Rain':
-              st.write('**Predicted Rainfall:**', prediction_label, icon="⚠️⛈️")
+        if prediction_label == 'No Rain':
+          st.write(f'<span class="prediction-label">**Predicted Rainfall:** {prediction_label}🌵</span>', unsafe_allow_html=True, icon="🌵")
+        elif prediction_label == 'Light Rain':
+          st.write(f'<span class="prediction-label">**Predicted Rainfall:** {prediction_label}</span>', unsafe_allow_html=True, icon="💧")
+        elif prediction_label == 'Moderate Rain':
+          st.write(f'<span class="prediction-label">**Predicted Rainfall:** {prediction_label}</span>', unsafe_allow_html=True, icon="💦")
+        elif prediction_label == 'Heavy Rain':
+          st.write(f'<span class="prediction-label">**Predicted Rainfall:** {prediction_label}</span>', unsafe_allow_html=True, icon="🌧️")
+        elif prediction_label == 'Extreme Rain':
+          st.write(f'<span class="prediction-label">**Predicted Rainfall:** {prediction_label}</span>', unsafe_allow_html=True, icon="⚠️⛈️")
+
           
 
 
