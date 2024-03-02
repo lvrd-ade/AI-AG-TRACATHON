@@ -9,7 +9,7 @@ import os
 import pandas as pd 
 import pickle
 from joblib import load
-import plotly.express as px
+
 
 load_dotenv()
 COHERE_API_KEY = os.getenv("API_KEY")
@@ -308,45 +308,63 @@ def predict_rainfall(input_data):
 #     elif prediction_label == 'Extreme Rain':
 #       st.success(f'The predicted rainfall category is: {prediction_label}', icon="⚠️⛈️")
     
+#css for making the horizontal line custom
+st.markdown("""
+  <style>
+      .day-divider {
+          border-bottom: 10px solid black; /* Changed color to black and made thicker*/
+          margin-bottom: 10px; 
+      }
+  </style>
+  """, unsafe_allow_html=True)
+    
 
 #third iteration
 if st.button('Predict Rainfall'):
+    
+  
+  
 
-    for i in range(7):
-        # Input data (get this from user input later)
-        input_data = np.array([[dfDisplayData["year"][i], dfDisplayData["month"][i], dfDisplayData["day"][i], dfDisplayData["max_temperature"][i], dfDisplayData["min_temperature"][i], dfDisplayData["avg_wind_speed"][i], dfDisplayData["humidity"][i]]])
+  for i in range(7):
+      
+      st.markdown('<div class="day-divider"></div>', unsafe_allow_html=True)
+      
+      # st.markdown('---')  # Add a horizontal line 
+      
+      # Input data (get this from user input later)
+      input_data = np.array([[dfDisplayData["year"][i], dfDisplayData["month"][i], dfDisplayData["day"][i], dfDisplayData["max_temperature"][i], dfDisplayData["min_temperature"][i], dfDisplayData["avg_wind_speed"][i], dfDisplayData["humidity"][i]]])
 
-        # Prediction
-        prediction = predict_rainfall(input_data)
-        prediction_label = ['No Rain', 'Light Rain', 'Moderate Rain', 'Heavy Rain', 'Extreme Rain'][prediction[0][0]]
+      # Prediction
+      prediction = predict_rainfall(input_data)
+      prediction_label = ['No Rain', 'Light Rain', 'Moderate Rain', 'Heavy Rain', 'Extreme Rain'][prediction[0][0]]
 
-        # Create two columns
-        col1, col2, = st.columns(2)
+      # Create two columns
+      col1, col2, = st.columns(2)
 
-        # Display weather data in the first column
-        with col1:
-            st.write("**Day:**", i + 1)  
-            st.write("**Year:**", dfDisplayData["year"][i])
-            st.write("**Month:**", dfDisplayData["month"][i])
-            st.write("**Day:**", dfDisplayData["day"][i])
-            st.write("**Max Temperature:**", dfDisplayData["max_temperature"][i])
-            st.write("**Min Temperature:**", dfDisplayData["min_temperature"][i])
-            st.write("**Avg. Wind Speed:**", dfDisplayData["avg_wind_speed"][i])
-            st.write("**Humidity:**", dfDisplayData["humidity"][i]) 
+      # Display weather data in the first column
+      with col1:
+          st.write("**Day:**", i + 1)  
+          st.write("**Year:**", dfDisplayData["year"][i])
+          st.write("**Month:**", dfDisplayData["month"][i])
+          st.write("**Day:**", dfDisplayData["day"][i])
+          st.write("**Max Temperature:**", dfDisplayData["max_temperature"][i])
+          st.write("**Min Temperature:**", dfDisplayData["min_temperature"][i])
+          st.write("**Avg. Wind Speed:**", dfDisplayData["avg_wind_speed"][i])
+          st.write("**Humidity:**", dfDisplayData["humidity"][i]) 
 
-        # Display prediction in the second column
-        with col2:
-            if prediction_label == 'No Rain':
-                st.write('**Predicted Rainfall:**', prediction_label, icon="🌵")
-            elif prediction_label == 'Light Rain':
-                st.write('**Predicted Rainfall:**', prediction_label, icon="💧")
-            elif prediction_label == 'Light Rain':
-                st.write('**Predicted Rainfall:**', prediction_label, icon="💦")
-            elif prediction_label == 'Light Rain':
-                st.write('**Predicted Rainfall:**', prediction_label, icon="🌧️")
-            elif prediction_label == 'Light Rain':
-                st.write('**Predicted Rainfall:**', prediction_label, icon="⚠️⛈️")
-            
+      # Display prediction in the second column
+      with col2:
+          if prediction_label == 'No Rain':
+              st.write('**Predicted Rainfall:**', prediction_label, icon="🌵")
+          elif prediction_label == 'Light Rain':
+              st.write('**Predicted Rainfall:**', prediction_label, icon="💧")
+          elif prediction_label == 'Light Rain':
+              st.write('**Predicted Rainfall:**', prediction_label, icon="💦")
+          elif prediction_label == 'Light Rain':
+              st.write('**Predicted Rainfall:**', prediction_label, icon="🌧️")
+          elif prediction_label == 'Light Rain':
+              st.write('**Predicted Rainfall:**', prediction_label, icon="⚠️⛈️")
+          
 
 
 
@@ -367,3 +385,6 @@ if st.button('Predict Rainfall'):
 #         st.write("Prediction: It's likely to rain.")
 #     else:
 #         st.write("Prediction: It's unlikely to rain.")
+
+
+# cool graph if we ever want to use it: https://discuss.streamlit.io/t/horizontal-scroll-through-chart/60701/2             
