@@ -9,6 +9,7 @@ import os
 import pandas as pd 
 import pickle
 from joblib import load
+import plotly.express as px
 
 load_dotenv()
 COHERE_API_KEY = os.getenv("API_KEY")
