@@ -178,7 +178,7 @@ data = {
     "avg_temperature": [73, 70, 77, 72, 65, 75, 70], 
 }
 
-st.title('My First Streamlit App')
+st.title('Extreme Rainfall Alert !!')
 st.write("Hello, world!")
 
 if st.button('Click me'):
