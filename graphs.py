@@ -39,6 +39,16 @@ def bar_graph(x, y):
 
 def heat_map(df):
     # Daily Average Data
+    df = pd.read_excel('Farm_Weather_Data.xlsx', index_col=None, header=0) 
+    df.to_excel("Weather_Data.xlsx") 
+    df['month'] = df.Date.dt.month
+    df['Month']=df.Date.dt.month_name()
+    df['year'] = df.Date.dt.year
+    df['day'] = df.Date.dt.day
+    df['weekdayName'] = df.Date.dt.day_name # df.date.dt.day_name() on Pandas 1.0
+    df['weekday'] = df.Date.dt.weekday
+    df['week'] = df.Date.dt.isocalendar().week
+    df['weekend'] = df.Date.dt.weekday // 5 == 1
     all_days_avg_df = df.groupby([df.Date.dt.month, df.Date.dt.day])['Precipitation'].mean()
     all_days_avg_df = all_days_avg_df.unstack()
     all_days_avg_df = all_days_avg_df.set_index([[calendar.month_abbr[i] for i in list(all_days_avg_df.index)]])
