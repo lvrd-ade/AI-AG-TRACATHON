@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 import os
 import pandas as pd 
 import pickle
+from joblib import load
 
 load_dotenv()
 COHERE_API_KEY = os.getenv("API_KEY")
@@ -172,63 +173,82 @@ print(response.classifications)
 #------------------------------------ streamlit stuff
 
 
-st.title('Extreme Rainfall Alert !!')
+st.title('Rainfall Predictions Utilizing Machinen Learning')
 st.write("Hello, world!")
 
-if st.button('Click me'):
-    st.write("You clicked the button!")
-
+#----------Cohere UI Stuff----------
 # User input area
 user_input = st.text_input("Enter your query:", "")
 # Button to trigger classification
-if st.button('Submit'):
-    if user_input:  # Check if there's input
-        response = co.classify(
-            model='large',  
-            inputs=[user_input],  
-            examples=examples
-        )
-        classification = response.classifications[0]
+# if st.button('Submit'):
+#     if user_input:  # Check if there's input
+#         response = co.classify(
+#             model='large',  
+#             inputs=[user_input],  
+#             examples=examples
+#         )
+#         classification = response.classifications[0]
 
-        # Display the AI's response
-        st.write("Predicted Category: ", classification.prediction)
-        st.write("Confidence:", classification.confidence)
-    else:
-        st.write("Please enter some text.")
+#         # Display the AI's response
+#         st.write("Predicted Category: ", classification.prediction)
+#         st.write("Confidence:", classification.confidence)
+#     else:
+#         st.write("Please enter some text.")
+#--------------------
+        
 
+
+#--------Placeholder Graph Stuff-------
 # Placeholder data
-x = np.arange(10)
-y = np.random.randn(10)
+# x = np.arange(10)
+# y = np.random.randn(10)
 
-# Create three columns for the graphs
-col1, col2, col3 = st.columns(3)
+# # Create three columns for the graphs
+# col1, col2, col3 = st.columns(3)
 
-# Graph in the first column
-with col1:
-    fig, ax = plt.subplots()
-    ax.plot(x, y)
-    st.pyplot(fig)
+# # Graph in the first column
+# with col1:
+#     fig, ax = plt.subplots()
+#     ax.plot(x, y)
+#     st.pyplot(fig)
 
-# Graph in the second column
-with col2:
-    fig, ax = plt.subplots()
-    ax.plot(x, y) 
-    st.pyplot(fig)
+# # Graph in the second column
+# with col2:
+#     fig, ax = plt.subplots()
+#     ax.plot(x, y) 
+#     st.pyplot(fig)
 
-# Graph in the third column
-with col3:
-    fig, ax = plt.subplots()
-    ax.plot(x, y) 
-    st.pyplot(fig)
+# # Graph in the third column
+# with col3:
+#     fig, ax = plt.subplots()
+#     ax.plot(x, y) 
+#     st.pyplot(fig)
+#------------------------------------
 
+
+
+#-----Inputting user data stuff-----
 # User date input
-user_date = st.date_input("Select a date:", datetime.date.today())
+# user_date = st.date_input("Select a date:", datetime.date.today())
 
-# are we doing the computation for this prediction in-app, or sending this date to a backend?
-st.write("You selected:", user_date)
+# # are we doing the computation for this prediction in-app, or sending this date to a backend?
+# st.write("You selected:", user_date)
+#-----------------------------------
 
+# Button to make prediction
+if st.button('Predict Rainfall'):
+  # Creating a numpy array from the input data
+  input_data = np.array([[year, month, day, max_temp, min_temp, wind_speed, humidity]])
 
+  # Making prediction
+  prediction = predict_rainfall(input_data)
+  
+  print(prediction)  # Add this to debug
 
+  # Mapping prediction to label
+  prediction_label = ['No Rain', 'Light Rain', 'Moderate Rain', 'Heavy Rain', 'Extreme Rain'][prediction[0][0]]
+  
+  st.success(f'The predicted rainfall category is: {prediction_label}')
 
 #pandas dataframe to hold display
 data = {
